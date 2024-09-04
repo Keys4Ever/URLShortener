@@ -1,0 +1,37 @@
+<!-- Tu archivo HTML -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Shortener</title>
+</head>
+<body>
+  <input type="text" id="shortenedUrl" placeholder="Enter shortened URL ID" />
+  <button id="fetchUrl">Obtener URL Original</button>
+  <p id="originalUrl"></p>
+
+  <form method="post" action="/shortUrl">
+    <label for="originalUrl">Ingresar URL Personalizada:</label>
+    <input type="text" id="originalUrl" name="originalUrl" required />
+    <button type="submit">Generar Código Corto</button>
+  </form>
+  
+  <script>
+    document.getElementById('fetchUrl').addEventListener('click', async function () {
+      const shortenedUrl = document.getElementById('shortenedUrl').value;
+      
+      try {
+        const response = await fetch(`http://localhost:3000/api/original-url/${shortenedUrl}`);
+          if (!response.ok) {
+          throw new Error('URL no encontrada o hubo un error en el servidor');
+        }
+        const data = await response.json();
+        document.getElementById('originalUrl').textContent = `URL Original: ${data.originalUrl}`;
+      } catch (error) {
+        document.getElementById('originalUrl').textContent = `Error: ${error.message}`;
+      }
+    });
+  </script>
+</body>
+</html>
