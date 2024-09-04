@@ -1,11 +1,8 @@
-// Connect to the Turso database using the libsql client library for Node.js.
 import { createClient } from "@libsql/client";
 import cors from 'cors';
 import { nanoid } from 'nanoid'
 import express from "express";
 const app = express();
-
-//dotenv config to read environment variables from.env file
 import dotenv from 'dotenv';
 dotenv.config();
 app.use(cors());
@@ -36,9 +33,11 @@ async function lookForUrl(id) {
 app.use(express.static("public")); 
 
 app.get("/", (req, res) => {
-  res.sendFile("/public/index.html");
+  res.sendFile("/public/index");
 });
 
+// Post method to create a new shortened URL.
+// #TODO make a html page for "shortUrl"
 app.post('/shortUrl', async (req, res) => {
   try {
     let originalUrl = req.body.originalUrl;
@@ -75,11 +74,12 @@ app.get("/:shortenedUrl", async (req, res) => {
   }
 });
 
-// Nuevo endpoint para obtener la URL original sin redirigir
+
+// API endpoint to get the original url with a shortened URL. Made for test, but maybe it can be a feature.
 app.get("/api/original-url/:shortenedUrl", async (req, res) => {
   try {
     const originalUrl = await lookForUrl(req.params.shortenedUrl);
-    res.json({ originalUrl }); // Devuelve la URL original como JSON
+    res.json({ originalUrl });
   } catch (error) {
     res.status(error.status || 500).json({ error: error.message });
   }
