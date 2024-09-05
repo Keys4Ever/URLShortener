@@ -12,8 +12,11 @@
   <p id="originalUrl"></p>
 
   <form method="post" action="/shortUrl">
-    <label for="originalUrl">Ingresar URL Personalizada:</label>
+    <label for="originalUrl">Ingresar URL a acortar:</label>
     <input type="text" id="originalUrl" name="originalUrl" required />
+  <form method="post" action="/shortUrl">
+    <label for="wantedUrl">Ingresar URL deseada:</label>
+    <input type="text" id="wantedUrl" name="wantedUrl" placeholder="https://cosito.site/..." />
     <button type="submit">Generar Código Corto</button>
   </form>
   

@@ -41,14 +41,27 @@ app.get("/", (req, res) => {
 app.post('/shortUrl', async (req, res) => {
   try {
     let originalUrl = req.body.originalUrl;
+    let wantedUrl = req.body.wantedUrl;
     if (!originalUrl) {
       return res.status(400).json({ error: "La URL original es requerida." });
     } else if (!originalUrl.startsWith('https://') || !originalUrl.startsWith('http://')) {
       originalUrl = `https://${originalUrl}`;
     }
-   
+    let id;
+    if (!wantedUrl) {
+      id = nanoid(5);
+    } else {
+      const newResponse = await turso.execute({
+        sql: "SELECT id FROM shortened_urls WHERE id = :id",
+        args: { id: wantedUrl },
+      });
     
-    const id = nanoid(5); 
+      if (newResponse.rows.length > 0) {
+        return res.status(409).json({ error: "La URL solicitada ya existe. Por favor, intenta usar otra." });
+      } else {
+        id = wantedUrl;
+      }
+    }    
     const response = await turso.execute({
       sql: "INSERT INTO shortened_urls (id, original_url) VALUES (:_id, :_original_url)",
       args: { _id: id, _original_url: originalUrl },
