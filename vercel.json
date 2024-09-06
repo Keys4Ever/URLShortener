@@ -16,7 +16,7 @@
         "dest": "/app.js"
       },
       {
-        "src": "/shortUrl",
+        "src": "/:shortUrl",
         "dest": "/app.js"
       },
       {
