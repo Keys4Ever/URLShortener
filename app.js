@@ -88,6 +88,7 @@ app.post('/shortUrl', async (req, res) => {
       res.status(409).json({ error: "La URL deseada ya está en uso. Por favor, intenta usar otra." });
     } else {
       res.status(500).json({ error: error.message });
+      console.log(error)
     }
   }
 });

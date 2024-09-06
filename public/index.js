@@ -92,9 +92,11 @@ document.querySelector('form').addEventListener('submit', async function (event)
             togglePopup(`URL Acortada: ${result.shortenedUrl}`);
         } else {
             togglePopup(`Error: ${result.error}`);
+            console.log(result.error);
         }
     } catch (error) {
         togglePopup(`Error: ${error.message}`);
+        console.log(error.message);
     }
 });
 
