@@ -16,7 +16,11 @@
         "dest": "/app.js"
       },
       {
-        "src": "/:shortUrl",
+        "src": "/shortUrl",
+        "dest": "/app.js"
+      },
+      {
+        "src": "/([a-zA-Z0-9-_]{5})",
         "dest": "/app.js"
       },
       {
