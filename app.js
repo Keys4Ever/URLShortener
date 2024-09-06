@@ -79,7 +79,7 @@ app.post('/shortUrl', async (req, res) => {
     });
 
     if (response.rowsAffected > 0) {
-      res.status(201).json({ id, shortenedUrl: `https://localhost:3000/${id}` });
+      res.status(201).json({ id, shortenedUrl: `https://cositoshort.vercel.app/${id}` });
     } else {
       res.status(500).json({ error: "No se pudo crear la URL acortada." });
     }
