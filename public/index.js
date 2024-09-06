@@ -17,7 +17,7 @@ async function getUrl() {
 
 
   try {
-    const response = await fetch(`http://cositoshort.vercel.app/api/original-url/${shortenedUrl}`);
+    const response = await fetch(`https://cositoshort.vercel.app/api/original-url/${shortenedUrl}`);
       if (!response.ok) {
       togglePopup(`URL No encontrada...`);
       return;
