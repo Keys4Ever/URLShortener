@@ -16,12 +16,12 @@
         "dest": "/app.js"
       },
       {
-        "src": "/shortUrl",
-        "dest": "/app.js"
-      },
-      {
         "src": "/(.*)",
         "dest": "/public/$1"
+      },
+      {
+        "src": "/:shortenedUrl",
+        "dest": "/app.js"
       }
     ]
   }
