@@ -87,8 +87,8 @@ app.post('/shortUrl', async (req, res) => {
     if (error.message.includes("SQLITE_CONSTRAINT: SQLite error: UNIQUE constraint failed: shortened_urls.id")) {
       res.status(409).json({ error: "La URL deseada ya está en uso. Por favor, intenta usar otra." });
     } else {
-      res.status(500).json({ error: error.message });
-      console.log(error)
+      console.error(error);
+      res.status(500).json({ error: "Error interno del servidor." });
     }
   }
 });

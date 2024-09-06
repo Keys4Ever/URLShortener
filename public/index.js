@@ -88,6 +88,7 @@ document.querySelector('form').addEventListener('submit', async function (event)
             })
         });
 
+        // Check if the response is in JSON format
         const result = await response.json();
 
         if (response.ok) {
@@ -101,6 +102,7 @@ document.querySelector('form').addEventListener('submit', async function (event)
         console.log(error.message);
     }
 });
+
 
 
 
