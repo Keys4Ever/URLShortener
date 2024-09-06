@@ -6,25 +6,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="/output.css" rel="stylesheet">
   <title>URL Shortener</title>
+  <style>
+    body{
+      background-image: url("background.svg");
+    }
+  </style>
 </head>
-<body class="bg-gray-950 text-white flex flex-col justify-center items-center min-h-screen space-y-8">
-  <div id="overlay" style="display: none;"" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-40"></div>
-  <div id="radix-:r5:" class="z-10 grid w-full max-w-lg gap-4 border border-neutral-200 bg-white p-6 shadow-lg duration-200 dark:border-neutral-800 dark:bg-neutral-900 sm:rounded-lg" style="pointer-events: auto;">
+<body class="bg-[#0E1015] text-[#fdfdc2] flex flex-col justify-center items-center min-h-screen space-y-8">
+  <div id="overlay" style="display: none;"" class="fixed inset-0 bg-[#1f2d4099] bg-opacity-50 backdrop-blur-sm z-40"></div>
+  <div class="z-10 grid w-full max-w-lg gap-4 border p-6 shadow-lg duration-200 border-[#1f2d40] bg-[#1f2d4099] sm:rounded-lg" style="pointer-events: auto;">
     <div class="flex flex-col space-y-1.5 text-center sm:text-left mb-2">
-      <h2 class="text-lg font-semibold leading-none tracking-tight opacity-60">Acortar una URL</h2>
+      <h2 class="text-lg font-semibold leading-none text-[#f8ee33] tracking-tight">KeysURL</h2>
     </div>
 
     <form method="post" action="/shortUrl" class="space-y-6">
       <div class="space-y-5">
         <div class="space-y-2">
-          <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="originalUrl">Ingresar URL a acortar:</label>
-          <input class="flex h-9 w-full rounded-md border border-neutral-300 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:placeholder:text-neutral-400 dark:focus-visible:ring-neutral-700" type="text" id="originalUrl" name="originalUrl" required />
+          <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed opacity-80" for="originalUrl">Ingresar URL a acortar:</label>
+          <input class="flex h-9 w-full rounded-md bg-[#1f2d40b9] px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-[#fdfdc29f] focus-visible:outline-none focus-visible:ring-1" type="text" id="originalUrl" placeholder="https://ejemplo.com/unaurlrealmentedemasiadolarga" name="originalUrl" required />
         </div>
         <div class="space-y-2">
-          <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="wantedUrl">Ingresar URL deseada:</label>
+          <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed opacity-80" for="wantedUrl">Ingresar URL deseada:</label>
           <div class="relative flex items-center">
-            <input class="flex h-9 w-full rounded-md border border-neutral-300 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:placeholder:text-neutral-400 dark:focus-visible:ring-neutral-700" type="text" id="wantedUrl" name="wantedUrl" placeholder="https://cosito.site/..." />
-            <button type="button" class="inline-flex items-center space-x-3 justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-neutral-700 focus-visible:ring-neutral-500 border border-neutral-200 bg-white shadow-sm hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:hover:text-neutral-50 dark:hover:border-neutral-700/50 h-9 px-4 py-2 absolute right-0 rounded-none rounded-br-md rounded-tr-md" id="randomize">
+            <input class="flex h-9 w-full rounded-md bg-[#1f2d40b9] px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-[#fdfdc29f] focus-visible:outline-none focus-visible:ring-1" type="text" id="wantedUrl" name="wantedUrl" placeholder="https://keys.lat/..." />
+            <button type="button" class="inline-flex items-center space-x-3 justify-center whitespace-nowrap text-sm font-medium text-[#f8ee33] focus-visible:outline-none bg-[#1f2d40] shadow hover:scale-105 transition-all h-9 px-4 py-2 absolute right-0 rounded-none rounded-br-md rounded-tr-md" id="randomize">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shuffle">
                 <path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22"></path>
                 <path d="m18 2 4 4-4 4"></path>
@@ -38,15 +43,15 @@
         </div>
       </div>
 
-      <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-        <button class="inline-flex items-center space-x-3 justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-neutral-700 focus-visible:ring-neutral-500 bg-neutral-800 text-neutral-50 shadow hover:bg-neutral-800/90 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:bg-neutral-700/50 h-9 px-4 py-2" type="submit">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rocket">
+      <div class="flex sm:space-x-2">
+        <button class="inline-flex items-center space-x-3 justify-center whitespace-nowrap rounded-md text-sm font-medium text-[#f8ee33] focus-visible:outline-none bg-[#1f2d40] shadow hover:scale-105 transition-all h-9 px-4 py-2" type="submit">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f8ee33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rocket">
             <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
             <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
             <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
             <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
           </svg>
-          <span>Generar Código Corto</span>
+          <span>Acortar URL</span>
         </button>
       </div>
     </form>
@@ -54,21 +59,21 @@
 
 
     <!--Another dialog for look the url-->
-    <div class="relative w-full max-w-lg gap-4 border border-neutral-200 bg-white p-6 shadow-lg dark:border-neutral-800 dark:bg-neutral-900 sm:rounded-lg">
-      <div class="flex flex-col space-y-1.5 text-center sm:text-left mb-2">
-        <h2 class="text-base font-semibold leading-none text-wrap  tracking-tight opacity-60 mb-4">¿Quieres ver a donde redirige una url acortada por nosotros?</h2>
-        <div class="space-y-2">
-          <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="wantedUrl">Ingresar URL a previsualizar:</label>
-          <input type="text" id="shortenedUrl" placeholder="Enter shortened URL ID" class="flex h-9 w-full rounded-md border border-neutral-300 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:placeholder:text-neutral-400 dark:focus-visible:ring-neutral-700" />
-          <button id="fetchUrl" class="inline-flex items-center mt-2 space-x-3 justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-neutral-700 focus-visible:ring-neutral-500 bg-neutral-800 text-neutral-50 shadow hover:bg-neutral-800/90 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:bg-neutral-700/50 h-9 px-4 py-2">
+    <div class="relative w-full max-w-lg gap-4 border p-6 shadow-lg border-[#1f2d40] bg-[#1f2d4099] sm:rounded-lg">
+      <div class="flex flex-col space-y-2 text-center sm:text-left mb-2">
+        <h2 class="text-base font-semibold leading-none text-wrap text-[#f8ee33] tracking-tight mb-4">¿Quieres ver a donde redirige una url acortada por nosotros?</h2>
+        <div class="space-y-4">
+          <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed opacity-80" for="wantedUrl">Ingresar URL a previsualizar:</label>
+          <input type="text" id="shortenedUrl" placeholder="Ingresar los ultimos caractares del link (ID)" class="flex h-9 w-full rounded-md bg-[#1f2d40b9] px-3 text-sm shadow-sm transition-colors placeholder:text-[#fdfdc29f] focus-visible:outline-none focus-visible:ring-1" />
+          <button id="fetchUrl" class="inline-flex items-center space-x-3 justify-center whitespace-nowrap rounded-md text-sm font-medium text-[#f8ee33] focus-visible:outline-none bg-[#1f2d40] shadow hover:scale-105 transition-all h-9 px-4 py-2">
             Ver original
           </button>
         </div>
       </div>
     </div>
     
-    <div id="popup" style="display: none;" class="absolute z-50 max-w-lg w-full border border-neutral-200 bg-white p-6 shadow-lg dark:border-neutral-800 dark:bg-neutral-900">
-      <button id="closePopup" class="absolute top-2 right-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
+    <div id="popup" style="display: none;" class="absolute z-50 max-w-lg w-full border p-6 shadow-lg border-[#1f2d40] bg-[#1f2d40fd]">
+      <button id="closePopup" class="absolute top-2 right-2 text-[#f8ee33]">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x">
           <path d="M18 6 6 18"></path>
           <path d="M6 6l12 12"></path>
@@ -76,6 +81,27 @@
       </button>
       <div id="popupContent"></div>
     </div>
+    <footer class="bg-[#1f2d4099] text-white border-[1px] border-solid border-x-transparent border-b-transparent border-t-[#f8ee33] w-full">
+      <div class="flex items-center justify-center h-[80px] max-w-[1000px] w-full m-auto p-3">
+        <span>Hecho con ❤️ por Keys4Ever</span>
+        <div class="flex flex-row flex-nowrap gap-2 items-center ml-auto">
+          <a href="https://github.com/Keys4Ever/" aria-label="Revisa mi github">
+            <svg width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+            </svg>
+          </a>
+          <a href="https://wa.me/5491137018186" aria-label="Contactame a través de Whatsapp">
+            <svg width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" />
+              <path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+    
     
   <script src="index.js" type="module" defer></script>
 </body>

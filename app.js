@@ -79,7 +79,7 @@ app.post('/shortUrl', async (req, res) => {
     });
 
     if (response.rowsAffected > 0) {
-      res.status(201).json({ id, shortenedUrl: `https://cositoshort.vercel.app/${id}` });
+      res.status(201).json({ id, shortenedUrl: `https://keys.lat/${id}` });
     } else {
       res.status(500).json({ error: "No se pudo crear la URL acortada." });
     }
@@ -112,6 +112,5 @@ app.get("/api/original-url/:shortenedUrl", async (req, res) => {
     res.status(error.status || 500).json({ error: error.message });
   }
 });
-
 // Export the Express app for Vercel
 export default app;
