@@ -1,16 +1,36 @@
 import { createClient } from "@libsql/client";
-import cors from 'cors';
-import { nanoid } from 'nanoid';
+import cors from "cors";
+import { nanoid } from "nanoid";
 import express from "express";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
+const { auth } = require("express-openid-connect");
+
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  secret: "a long, randomly-generated string stored in env",
+  baseURL: "http://keys.lat",
+  clientID: "E5baYMNpD1YDHuKiXh2A6yAYw58bGiiA",
+  issuerBaseURL: "https://dev-b08mg8ad2fe7mbdr.us.auth0.com",
+};
+
+// auth router attaches /login, /logout, and /callback routes to the baseURL
+app.use(auth(config));
+
+// req.isAuthenticated is provided from the auth router
+app.get("/", (req, res) => {
+  res.send(req.oidc.isAuthenticated() ? "Logged in" : "Logged out");
+});
 
 dotenv.config();
 
 const app = express();
 
-app.use(cors({
-  origin: '*'
-}));
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -24,7 +44,7 @@ export const turso = createClient({
 async function lookForUrl(id) {
   const response = await turso.execute({
     sql: "SELECT original_url FROM shortened_urls WHERE id = (:_id)",
-    args: {_id: id},
+    args: { _id: id },
   });
   if (response.rows.length === 0) {
     throw new Error("404. URL not found.");
@@ -39,23 +59,26 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 
-async function alreadyExists(thing){
+async function alreadyExists(thing) {
   const result = await turso.execute({
     sql: "SELECT original_url FROM shortened_urls WHERE id = (:_id)",
-    args: {_id: thing},
+    args: { _id: thing },
   });
   return result.rowsAffected > 0;
 }
 
 // Post method to create a new shortened URL.
-app.post('/shortUrl', async (req, res) => {
+app.post("/shortUrl", async (req, res) => {
   try {
     let originalUrl = req.body.originalUrl;
     let wantedUrl = req.body.wantedUrl;
 
     if (!originalUrl) {
       return res.status(400).json({ error: "La URL original es requerida." });
-    } else if (!originalUrl.startsWith('https://') && !originalUrl.startsWith('http://')) {
+    } else if (
+      !originalUrl.startsWith("https://") &&
+      !originalUrl.startsWith("http://")
+    ) {
       originalUrl = `https://${originalUrl}`;
     }
 
@@ -67,7 +90,11 @@ app.post('/shortUrl', async (req, res) => {
       }
     } else {
       if (await alreadyExists(wantedUrl)) {
-        return res.status(409).json({ error: "La URL solicitada ya existe. Por favor, intenta usar otra." });
+        return res
+          .status(409)
+          .json({
+            error: "La URL solicitada ya existe. Por favor, intenta usar otra.",
+          });
       } else {
         id = wantedUrl;
       }
@@ -84,8 +111,16 @@ app.post('/shortUrl', async (req, res) => {
       res.status(500).json({ error: "No se pudo crear la URL acortada." });
     }
   } catch (error) {
-    if (error.message.includes("SQLITE_CONSTRAINT: SQLite error: UNIQUE constraint failed: shortened_urls.id")) {
-      res.status(409).json({ error: "La URL deseada ya está en uso. Por favor, intenta usar otra." });
+    if (
+      error.message.includes(
+        "SQLITE_CONSTRAINT: SQLite error: UNIQUE constraint failed: shortened_urls.id"
+      )
+    ) {
+      res
+        .status(409)
+        .json({
+          error: "La URL deseada ya está en uso. Por favor, intenta usar otra.",
+        });
     } else {
       console.error(error);
       res.status(500).json({ error: "Error interno del servidor." });
