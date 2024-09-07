@@ -3,28 +3,24 @@ import cors from "cors";
 import { nanoid } from "nanoid";
 import express from "express";
 import dotenv from "dotenv";
-const { auth } = require("express-openid-connect");
+import { auth } from "express-openid-connect";
 
-const config = {
+dotenv.config();
+
+const app = express();
+
+// Configuración de autenticación con Auth0
+const authConfig = {
   authRequired: false,
   auth0Logout: true,
-  secret: "a long, randomly-generated string stored in env",
+  secret: process.env.AUTH0_SECRET, // Debe estar almacenado en una variable de entorno
   baseURL: "http://keys.lat",
   clientID: "E5baYMNpD1YDHuKiXh2A6yAYw58bGiiA",
   issuerBaseURL: "https://dev-b08mg8ad2fe7mbdr.us.auth0.com",
 };
 
-// auth router attaches /login, /logout, and /callback routes to the baseURL
-app.use(auth(config));
-
-// req.isAuthenticated is provided from the auth router
-app.get("/", (req, res) => {
-  res.send(req.oidc.isAuthenticated() ? "Logged in" : "Logged out");
-});
-
-dotenv.config();
-
-const app = express();
+// Middleware de autenticación
+app.use(auth(authConfig));
 
 app.use(
   cors({
@@ -34,13 +30,13 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Connect to the Turso database
+// Conectar con la base de datos Turso
 export const turso = createClient({
   url: process.env.TURSO_DATABASE_URL,
   authToken: process.env.TURSO_DATABASE_TOKEN,
 });
 
-// Look for a shortened URL.
+// Buscar una URL acortada
 async function lookForUrl(id) {
   const response = await turso.execute({
     sql: "SELECT original_url FROM shortened_urls WHERE id = (:_id)",
@@ -52,7 +48,7 @@ async function lookForUrl(id) {
   return response.rows[0][0];
 }
 
-// Serve static files from the public folder.
+// Servir archivos estáticos desde la carpeta public
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
@@ -67,7 +63,7 @@ async function alreadyExists(thing) {
   return result.rowsAffected > 0;
 }
 
-// Post method to create a new shortened URL.
+// Endpoint para crear una nueva URL acortada
 app.post("/shortUrl", async (req, res) => {
   try {
     let originalUrl = req.body.originalUrl;
@@ -128,7 +124,7 @@ app.post("/shortUrl", async (req, res) => {
   }
 });
 
-// Redirect to the original URL when a shortened URL is accessed.
+// Redirigir a la URL original cuando se accede a una URL acortada
 app.get("/:shortenedUrl", async (req, res) => {
   try {
     const originalUrl = await lookForUrl(req.params.shortenedUrl);
@@ -138,7 +134,7 @@ app.get("/:shortenedUrl", async (req, res) => {
   }
 });
 
-// API endpoint to get the original url with a shortened URL.
+// Endpoint de API para obtener la URL original con una URL acortada
 app.get("/api/original-url/:shortenedUrl", async (req, res) => {
   try {
     const originalUrl = await lookForUrl(req.params.shortenedUrl);
@@ -147,5 +143,11 @@ app.get("/api/original-url/:shortenedUrl", async (req, res) => {
     res.status(error.status || 500).json({ error: error.message });
   }
 });
-// Export the Express app for Vercel
+
+// Ruta para verificar si el usuario está autenticado
+app.get("/", (req, res) => {
+  res.send(req.oidc.isAuthenticated() ? "Logged in" : "Logged out");
+});
+
+// Exportar la aplicación Express para Vercel
 export default app;
