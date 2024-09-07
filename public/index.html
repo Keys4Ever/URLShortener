@@ -23,12 +23,12 @@
       <div class="space-y-5">
         <div class="space-y-2">
           <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed opacity-80" for="originalUrl">Ingresar URL a acortar:</label>
-          <input class="flex h-9 w-full rounded-md bg-[#1f2d40b9] px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-[#fdfdc29f] focus-visible:outline-none focus-visible:ring-1" type="text" id="originalUrl" placeholder="https://ejemplo.com/unaurlrealmentedemasiadolarga" name="originalUrl" required />
+          <input class="flex h-9 w-full rounded-md bg-[#1f2d40b9] px-3 py-1 text-sm shadow-sm placeholder:text-[#fdfdc29f] focus-visible:outline-none focus-visible:ring-1" type="text" id="originalUrl" placeholder="https://ejemplo.com/unaurlrealmentedemasiadolarga" name="originalUrl" required />
         </div>
         <div class="space-y-2">
           <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed opacity-80" for="wantedUrl">Ingresar URL deseada:</label>
           <div class="relative flex items-center">
-            <input class="flex h-9 w-full rounded-md bg-[#1f2d40b9] px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-[#fdfdc29f] focus-visible:outline-none focus-visible:ring-1" type="text" id="wantedUrl" name="wantedUrl" placeholder="Dejar en blanco para aleatorio." />
+            <input class="flex h-9 w-full rounded-md bg-[#1f2d40b9] px-3 py-1 text-sm shadow-sm placeholder:text-[#fdfdc29f] focus-visible:outline-none focus-visible:ring-1" type="text" id="wantedUrl" name="wantedUrl" placeholder="Dejar en blanco para aleatorio." />
             <button type="button" class="inline-flex items-center space-x-3 justify-center whitespace-nowrap text-sm font-medium text-[#f8ee33] focus-visible:outline-none bg-[#1f2d40] shadow hover:scale-105 transition-all h-9 px-4 py-2 absolute right-0 rounded-none rounded-br-md rounded-tr-md" id="randomize">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shuffle">
                 <path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22"></path>
@@ -64,7 +64,7 @@
         <h2 class="text-base font-semibold leading-none text-wrap text-[#f8ee33] tracking-tight mb-4">¿Quieres ver a donde redirige una url acortada por nosotros?</h2>
         <div class="space-y-4">
           <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed opacity-80" for="wantedUrl">Ingresar URL a previsualizar:</label>
-          <input type="text" id="shortenedUrl" placeholder="Ingresar los ultimos caractares del link (ID)" class="flex h-9 w-full rounded-md bg-[#1f2d40b9] px-3 text-sm shadow-sm transition-colors placeholder:text-[#fdfdc29f] focus-visible:outline-none focus-visible:ring-1" />
+          <input type="text" id="shortenedUrl" placeholder="Ingresar los ultimos caractares del link (ID)" class="flex h-9 w-full rounded-md bg-[#1f2d40b9] px-3 text-sm shadow-sm placeholder:text-[#fdfdc29f] focus-visible:outline-none focus-visible:ring-1" />
           <button id="fetchUrl" class="inline-flex items-center space-x-3 justify-center whitespace-nowrap rounded-md text-sm font-medium text-[#f8ee33] focus-visible:outline-none bg-[#1f2d40] shadow hover:scale-105 transition-all h-9 px-4 py-2">
             Ver original
           </button>
@@ -82,7 +82,7 @@
       <div id="popupContent"></div>
     </div>
     <footer class="bg-[#1f2d4099] text-white border-[1px] border-solid border-x-transparent border-b-transparent border-t-[#f8ee33] w-full">
-      <div class="flex items-center justify-center h-[80px] max-w-[1000px] w-full m-auto p-3">
+      <div class="flex items-center justify-center h-[80px] w-full m-auto p-3">
         <span>Hecho con ❤️ por Keys4Ever</span>
         <div class="flex flex-row flex-nowrap gap-2 items-center ml-auto">
           <a href="https://github.com/Keys4Ever/" aria-label="Revisa mi github">
