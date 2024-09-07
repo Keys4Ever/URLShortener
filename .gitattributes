@@ -1,2 +1,2 @@
-*.js linguist-language=JavaScript
 public/output.css linguist-vendored
+public/index.html linguist-vendored
