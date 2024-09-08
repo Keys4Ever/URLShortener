@@ -3,6 +3,7 @@ import cors from 'cors';
 import { nanoid } from 'nanoid';
 import express from "express";
 import dotenv from 'dotenv';
+import { PORT } from "./utils.js";
 
 dotenv.config();
 
@@ -79,7 +80,7 @@ app.post('/shortUrl', async (req, res) => {
     });
 
     if (response.rowsAffected > 0) {
-      res.status(201).json({ id, shortenedUrl: `https://keys.lat/${id}` });
+      res.status(201).json({ id, shortenedUrl: `https://localhost:3000/${id}` });
     } else {
       res.status(500).json({ error: "No se pudo crear la URL acortada." });
     }
@@ -112,5 +113,12 @@ app.get("/api/original-url/:shortenedUrl", async (req, res) => {
     res.status(error.status || 500).json({ error: error.message });
   }
 });
-// Export the Express app for Vercel
-export default app;
+
+
+app.listen(PORT, ()=>{
+  console.log(`Server running on port ${PORT}`)  // log the server running message on console
+ });
+
+
+// // Export the Express app for Vercel
+// export default app;
