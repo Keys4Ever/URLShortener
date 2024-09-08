@@ -4,11 +4,20 @@ import { nanoid } from 'nanoid';
 import express from "express";
 import dotenv from 'dotenv';
 import { PORT } from "./utils.js";
-
+import { auth } from 'express-openid-connect';
 dotenv.config();
 
-const app = express();
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  secret: process.env.SECRET,
+  baseURL: process.env.BASEURL,
+  clientID: process.env.CLIENTID,
+  issuerBaseURL: process.env.ISSUER
+};
 
+const app = express();
+app.use(auth(config));
 app.use(cors({
   origin: '*'
 }));
@@ -37,7 +46,8 @@ async function lookForUrl(id) {
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
+//  res.sendFile(__dirname + "/public/index.html");
+  console.log("nose: ", res.oidc.isAuthenticated());
 });
 
 async function alreadyExists(thing){
