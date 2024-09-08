@@ -16,6 +16,11 @@ El proyecto actual es un acortador de URLs básico que cuenta con el diseño ini
 - [ ] Añadir integración con OAuth (Google, GitHub, etc.) para el inicio de sesión.
 - [ ] Crear un dashboard personalizado para que los usuarios gestionen sus URLs acortadas.
 
+## Mejora de la UX/UI
+
+- [ ] Crear una landing page atractiva con información clara sobre el servicio.
+- [ ] Realizar pruebas de usabilidad con usuarios para identificar áreas de mejora.
+
 ## Documentación
 
 - [ ] Crear una documentación detallada del proyecto y su arquitectura.
