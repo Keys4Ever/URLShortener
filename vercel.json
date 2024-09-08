@@ -24,18 +24,6 @@
       "dest": "/app.js"
     },
     {
-      "src": "/login",
-      "dest": "/app.js"
-    },
-    {
-      "src": "/logout",
-      "dest": "/app.js"
-    },
-    {
-      "src": "/callback",
-      "dest": "/app.js"
-    },
-    {
       "src": "/(.*)",
       "dest": "/public/$1"
     }
