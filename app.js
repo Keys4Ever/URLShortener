@@ -100,7 +100,7 @@ app.get("/:shortenedUrl", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(404);
-    res.sendFile(__dirname + "/public/404.html");
+    res.sendFile("/public/404.html");
   }
 });
 
