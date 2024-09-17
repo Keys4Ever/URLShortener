@@ -101,7 +101,7 @@ app.get("/:shortenedUrl", async (req, res) => {
   } catch (error) {
     res.status(error.status || 404);
     if (res.statusCode == 404){
-      res.sendFile(__dirname + "/public/404.html");
+      res.sendFile("404.html", { root: "public" });
     }
   }
 });
