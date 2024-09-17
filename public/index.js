@@ -22,7 +22,7 @@ async function getUrl() {
     console.log(error);
   }
 }
-
+document.getElementById('fetchUrl').addEventListener('click', getUrl)
 function togglePopup(texto) {
   const popup = document.getElementById('popup');
   const popupContent = document.getElementById('popupContent');
