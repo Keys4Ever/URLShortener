@@ -83,16 +83,16 @@ app.post('/shortUrl', async (req, res) => {
     if (response.rowsAffected > 0) {
       res.status(201).json({ id, shortenedUrl: `https://keys.lat/${id}` });
     } else {
-      res.status(500).json("No se pudo crear la URL acortada.");
+      res.status(500).json({ message: "No se pudo crear la URL acortada." });
     }
-  } catch (error) {
-    if (error.message.includes("SQLITE_CONSTRAINT: SQLite error: UNIQUE constraint failed: shortened_urls.id")) {
-      res.status(409).json("La URL deseada ya está en uso. Por favor, intenta usar otra.");
-    } else {
-      console.error(error);
-      res.status(500).json("Error interno del servidor.");
-    }
-  }
+    } catch (error) {
+      if (error.message.includes("SQLITE_CONSTRAINT: SQLite error: UNIQUE constraint failed: shortened_urls.id")) {
+        res.status(409).json({ message: "La URL deseada ya está en uso. Por favor, intenta usar otra." });
+      } else {
+        console.error(error);
+        res.status(500).json({ message: "Error interno del servidor." });
+      }
+    }    
 });
 
 app.get("/:shortenedUrl", async (req, res) => {

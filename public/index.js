@@ -1,4 +1,3 @@
-document.getElementById('fetchUrl').addEventListener('click', getUrl);
 import { nanoid } from 'https://cdn.jsdelivr.net/npm/nanoid@4.x.x/nanoid.js';
 
 /**
@@ -10,11 +9,13 @@ async function getUrl() {
   try {
     const response = await fetch(`https://keys.lat/api/original-url/${shortenedUrl}`);
     if (!response.ok) {
-      togglePopup('URL No encontrada...');
+      const errorData = await response.json();
+      togglePopup(`URL No encontrada: ${errorData.message}`);
       return;
     }
 
-    const originalUrl = await response.text(); // Obtener la respuesta como texto
+    const data = await response.json(); // Obtener la respuesta como JSON
+    const originalUrl = data.originalUrl; // Acceder a la propiedad correcta
     togglePopup(`URL Original: ${originalUrl}`);
   } catch (error) {
     togglePopup(`Error: ${error.message}`);
@@ -57,29 +58,29 @@ document.querySelector('form').addEventListener('submit', async function (event)
   const wantedUrl = formData.get('wantedUrl');
 
   try {
-      const response = await fetch('/shortUrl', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          body: new URLSearchParams({
-              originalUrl,
-              wantedUrl
-          })
-      });
+    const response = await fetch('/shortUrl', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
+        originalUrl,
+        wantedUrl
+      })
+    });
 
-      const result = await response.json();
+    const result = await response.json();
 
-      if (response.ok) {
-          // Redirigir a la página de éxito con el ID de la URL acortada
-          window.location.href = `/public/successful.html?urlId=${result.id}`;
-      } else {
-          // Si hay un error, mostrarlo en el popup
-          togglePopup(`Error: ${result.error}`);
-          console.log(result.error);
-      }
+    if (response.ok) {
+      // Redirigir a la página de éxito con el ID de la URL acortada
+      window.location.href = `/public/successful.html?urlId=${result.id}`;
+    } else {
+      // Si hay un error, mostrarlo en el popup
+      togglePopup(`Error: ${result.error}`);
+      console.log(result.error);
+    }
   } catch (error) {
-      togglePopup(`Error: ${error.message}`);
-      console.log(error.message);
+    togglePopup(`Error: ${error.message}`);
+    console.log(error.message);
   }
 });
