@@ -1,8 +1,9 @@
-import { createClient } from "@libsql/client";
+import express from "express";
+import path from 'path';
 import cors from 'cors';
 import { nanoid } from 'nanoid';
-import express from "express";
 import dotenv from 'dotenv';
+import { createClient } from "@libsql/client";
 
 dotenv.config();
 const app = express();
@@ -11,7 +12,6 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 
 // Connect to the Turso database
 export const turso = createClient({
@@ -32,10 +32,10 @@ async function lookForUrl(id) {
 }
 
 // Serve static files from the public folder.
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get("/", (req, res) => {
-  res.sendFile('index.html');
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 async function alreadyExists(thing){
@@ -92,7 +92,6 @@ app.post('/shortUrl', async (req, res) => {
   }
 });
 
-
 app.get("/:shortenedUrl", async (req, res) => {
   try {
     const originalUrl = await lookForUrl(req.params.shortenedUrl);
@@ -100,7 +99,7 @@ app.get("/:shortenedUrl", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(404);
-    res.sendFile("404.html");
+    res.sendFile(path.join(__dirname, 'public', '404.html'));
   }
 });
 
@@ -113,5 +112,6 @@ app.get("/api/original-url/:shortenedUrl", async (req, res) => {
     res.status(error.status || 500).json({ error: error.message });
   }
 });
+
 // Export the Express app for Vercel
 export default app;
