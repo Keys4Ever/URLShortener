@@ -56,7 +56,7 @@ app.post('/shortUrl', async (req, res) => {
     let wantedUrl = req.body.wantedUrl;
 
     if (!originalUrl) {
-      return res.status(400).json({ error: "La URL original es requerida." });
+      return res.status(400).send("La URL original es requerida.");
     } else if (!originalUrl.startsWith('https://') && !originalUrl.startsWith('http://')) {
       originalUrl = `https://${originalUrl}`;
     }
@@ -69,7 +69,7 @@ app.post('/shortUrl', async (req, res) => {
       }
     } else {
       if (await alreadyExists(wantedUrl)) {
-        return res.status(409).json({ error: "La URL solicitada ya existe. Por favor, intenta usar otra." });
+        return res.status(409).send("La URL solicitada ya existe. Por favor, intenta usar otra.");
       } else {
         id = wantedUrl;
       }
@@ -81,16 +81,17 @@ app.post('/shortUrl', async (req, res) => {
     });
 
     if (response.rowsAffected > 0) {
-      res.status(201).json({ id, shortenedUrl: `https://keys.lat/${id}` }).redirect(`/public/successful.html?urlId=${id}`)
+      // Redirige a la página `successful.html` con el ID como parámetro
+      res.redirect(`/public/successful.html?urlId=${id}`);
     } else {
-      res.status(500).json({ error: "No se pudo crear la URL acortada." });
+      res.status(500).send("No se pudo crear la URL acortada.");
     }
   } catch (error) {
     if (error.message.includes("SQLITE_CONSTRAINT: SQLite error: UNIQUE constraint failed: shortened_urls.id")) {
-      res.status(409).json({ error: "La URL deseada ya está en uso. Por favor, intenta usar otra." });
+      res.status(409).send("La URL deseada ya está en uso. Por favor, intenta usar otra.");
     } else {
       console.error(error);
-      res.status(500).json({ error: "Error interno del servidor." });
+      res.status(500).send("Error interno del servidor.");
     }
   }
 });

@@ -7,17 +7,19 @@
 </head>
 <body>
     <h1>URL Shortened Successfully!</h1>
-    <p>Your shortened URL is: <span id="shortened-url"></span></p>
+    <p>Your shortened URL is: <a href="#" id="shortened-url"></a></p>
 
     <script>
         // Obtener el parámetro 'urlId' de la URL
         const urlParams = new URLSearchParams(window.location.search);
         const urlId = urlParams.get('urlId');
         
-        // Si el parámetro 'urlId' está presente, mostrar la URL acortada
+        // Si el parámetro 'urlId' está presente, mostrar la URL acortada como un enlace
         if (urlId) {
             const fullUrl = `https://keys.lat/${urlId}`;
-            document.getElementById('shortened-url').textContent = fullUrl;
+            const shortenedUrlElement = document.getElementById('shortened-url');
+            shortenedUrlElement.textContent = fullUrl;
+            shortenedUrlElement.href = fullUrl; 
         }
     </script>
 </body>
