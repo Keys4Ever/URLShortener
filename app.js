@@ -93,18 +93,17 @@ app.post('/shortUrl', async (req, res) => {
   }
 });
 
-// Redirect to the original URL when a shortened URL is accessed.
 app.get("/:shortenedUrl", async (req, res) => {
   try {
     const originalUrl = await lookForUrl(req.params.shortenedUrl);
     res.redirect(originalUrl);
   } catch (error) {
-    res.status(error.status || 404);
-    if (res.statusCode == 404){
-      res.sendFile("404.html", { root: "public" });
-    }
+    console.error(error);
+    res.status(404);
+    res.sendFile("404.html", { root: "public" });
   }
 });
+
 
 // API endpoint to get the original url with a shortened URL.
 app.get("/api/original-url/:shortenedUrl", async (req, res) => {
