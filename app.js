@@ -3,6 +3,10 @@ import cors from 'cors';
 import { nanoid } from 'nanoid';
 import express from "express";
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -13,6 +17,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Connect to the Turso database
 export const turso = createClient({
@@ -36,7 +41,7 @@ async function lookForUrl(id) {
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
+  res.sendFile("index.html");
 });
 
 async function alreadyExists(thing){
@@ -100,7 +105,7 @@ app.get("/:shortenedUrl", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(404);
-    res.sendFile("/public/404.html");
+    res.sendFile("404.html");
   }
 });
 
