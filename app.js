@@ -99,7 +99,10 @@ app.get("/:shortenedUrl", async (req, res) => {
     const originalUrl = await lookForUrl(req.params.shortenedUrl);
     res.redirect(originalUrl);
   } catch (error) {
-    res.status(error.status || 404).send(error.message);
+    res.status(error.status || 404);
+    if (res.statusCode == 404){
+      res.sendFile(__dirname + "/public/404.html");
+    }
   }
 });
 
