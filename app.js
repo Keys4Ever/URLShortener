@@ -4,7 +4,11 @@ import cors from 'cors';
 import { nanoid } from 'nanoid';
 import dotenv from 'dotenv';
 import { createClient } from "@libsql/client";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 dotenv.config();
 const app = express();
 app.use(cors({
@@ -35,9 +39,8 @@ async function lookForUrl(id) {
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(__dirname + "/public/index.html");
 });
-
 async function alreadyExists(thing){
   const result = await turso.execute({
     sql: "SELECT original_url FROM shortened_urls WHERE id = (:_id)",
@@ -99,7 +102,7 @@ app.get("/:shortenedUrl", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(404);
-    res.sendFile(path.join(__dirname, 'public', '404.html'));
+    res.sendFile(__dirname + "/public/404.html");
   }
 });
 
