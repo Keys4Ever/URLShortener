@@ -3,11 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/output.css" rel="stylesheet">
     <title>URL Successfully Created</title>
+    <style>
+        body {
+            background-image: url("background.svg");
+        }
+    </style>
 </head>
-<body>
-    <h1>URL Shortened Successfully!</h1>
-    <p>Your shortened URL is: <a href="#" id="shortened-url"></a></p>
+<body class="bg-[#0E1015] text-[#fdfdc2] flex flex-col min-h-screen">
+    <!-- Main content -->
+    <div class="flex-grow flex flex-col justify-center items-center space-y-8">
+        <div class="z-10 grid w-full max-w-lg gap-4 border mt-7 p-6 shadow-lg duration-200 border-[#1f2d40] bg-[#1f2d4099] sm:rounded-lg">
+            <div class="flex flex-col items-center space-y-1.5 mb-2">
+                <h2 class="text-3xl font-semibold leading-none text-[#f8ee33] tracking-tight text-center">🚀KeysURL</h2>
+            </div>
+            <h1 class="text-2xl text-[#f8ee33] text-center">URL Shortened Successfully!</h1>
+            <p class="text-center">Your shortened URL is: <a href="#" id="shortened-url" class="text-[#f8ee33] underline"></a></p>
+        </div>
+    </div>
+
+    <footer class="bg-[#1f2d4099] text-white border-[1px] border-solid border-x-transparent border-b-transparent border-t-[#f8ee33] mt-4 w-full">
+        <div class="flex items-center justify-center w-full m-auto p-3">
+            <span>Hecho con ❤️ por Keys4Ever</span>
+        </div>
+    </footer>
 
     <script>
         // Obtener el parámetro 'urlId' de la URL
