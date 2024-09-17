@@ -81,8 +81,7 @@ app.post('/shortUrl', async (req, res) => {
     });
 
     if (response.rowsAffected > 0) {
-      res.redirect(`/public/successful.html?urlId=${id}`);
-      res.status(201).json({ id, shortenedUrl: `https://keys.lat/${id}` });
+      res.status(201).json({ id, shortenedUrl: `https://keys.lat/${id}` }).redirect(`/public/successful.html?urlId=${id}`)
     } else {
       res.status(500).json({ error: "No se pudo crear la URL acortada." });
     }
