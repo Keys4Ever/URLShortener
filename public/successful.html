@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Successfully Created</title>
+</head>
+<body>
+    <h1>URL Shortened Successfully!</h1>
+    <p>Your shortened URL is: <span id="shortened-url"></span></p>
+
+    <script>
+        // Obtener el parámetro 'urlId' de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlId = urlParams.get('urlId');
+        
+        // Si el parámetro 'urlId' está presente, mostrar la URL acortada
+        if (urlId) {
+            const fullUrl = `https://keys.lat/${urlId}`;
+            document.getElementById('shortened-url').textContent = fullUrl;
+        }
+    </script>
+</body>
+</html>
