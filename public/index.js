@@ -57,27 +57,29 @@ document.querySelector('form').addEventListener('submit', async function (event)
   const wantedUrl = formData.get('wantedUrl');
 
   try {
-    const response = await fetch('/shortUrl', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams({
-        originalUrl,
-        wantedUrl
-      })
-    });
+      const response = await fetch('/shortUrl', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: new URLSearchParams({
+              originalUrl,
+              wantedUrl
+          })
+      });
 
-    if (response.ok) {
-      const shortenedUrl = await response.text(); // Obtener la respuesta como texto
-      togglePopup(`URL Acortada: ${shortenedUrl}`);
-    } else {
-      const errorText = await response.text(); // Obtener el mensaje de error como texto
-      togglePopup(`Error: ${errorText}`);
-      console.log(errorText);
-    }
+      const result = await response.json();
+
+      if (response.ok) {
+          // Redirigir a la página de éxito con el ID de la URL acortada
+          window.location.href = `/public/successful.html?urlId=${result.id}`;
+      } else {
+          // Si hay un error, mostrarlo en el popup
+          togglePopup(`Error: ${result.error}`);
+          console.log(result.error);
+      }
   } catch (error) {
-    togglePopup(`Error: ${error.message}`);
-    console.log(error.message);
+      togglePopup(`Error: ${error.message}`);
+      console.log(error.message);
   }
 });
