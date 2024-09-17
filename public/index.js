@@ -76,7 +76,7 @@ document.querySelector('form').addEventListener('submit', async function (event)
       window.location.href = `/public/successful.html?urlId=${result.id}`;
     } else {
       // Si hay un error, mostrarlo en el popup
-      togglePopup(`Error: ${result.error}`);
+      togglePopup(`Error: La url deseada ya se encuentra en uso`);
       console.log(result.error);
     }
   } catch (error) {
