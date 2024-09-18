@@ -19,7 +19,21 @@
                 <h2 class="text-3xl font-semibold leading-none text-[#f8ee33] tracking-tight text-center">🚀KeysURL</h2>
             </div>
             <h1 class="text-2xl text-[#f8ee33] text-center">URL Shortened Successfully!</h1>
-            <p class="text-center">Your shortened URL is: <a href="#" id="shortened-url" class="text-[#f8ee33] underline"></a></p>
+            <div class="grid grid-cols-8 gap-2 w-full max-w-[23rem]">
+                <!-- Enlace de la URL acortada -->
+                <a href="#" id="shortened-url" class="col-span-6 text-[#fdfdc2] underline bg-[#0E1015] border border-[#1f2d40] text-sm rounded-lg focus:ring-[#f8ee33] focus:border-[#f8ee33] block w-full p-2.5 dark:bg-[#0E1015] dark:border-[#1f2d40] dark:placeholder-gray-400 dark:text-[#fdfdc2] dark:focus:ring-[#f8ee33] dark:focus:border-[#f8ee33]" target="_blank" readonly>
+                </a>
+                <!-- Botón de copiar -->
+                <button id="copy-button" data-copy-to-clipboard-target="shortened-url" class="col-span-2 text-white bg-[#f8ee33] hover:bg-[#d4c932] focus:ring-4 focus:outline-none focus:ring-[#d4c932] font-medium rounded-lg text-sm w-full sm:w-auto py-2.5 text-center dark:bg-[#f8ee33] dark:hover:bg-[#d4c932] dark:focus:ring-[#d4c932] items-center inline-flex justify-center">
+                    <span id="default-message">Copy</span>
+                    <span id="success-message" class="hidden inline-flex items-center">
+                        <svg class="w-3 h-3 text-white me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                        </svg>
+                        Copied!
+                    </span>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -41,6 +55,25 @@
             shortenedUrlElement.textContent = fullUrl;
             shortenedUrlElement.href = fullUrl; 
         }
+
+        // Lógica para copiar al portapapeles
+        const copyButton = document.getElementById('copy-button');
+        const defaultMessage = document.getElementById('default-message');
+        const successMessage = document.getElementById('success-message');
+        copyButton.addEventListener('click', () => {
+            const shortenedUrlElement = document.getElementById('shortened-url').textContent;
+            navigator.clipboard.writeText(shortenedUrlElement).then(() => {
+                // Cambiar el mensaje a "Copied!"
+                defaultMessage.classList.add('hidden');
+                successMessage.classList.remove('hidden');
+                
+                // Volver a mostrar "Copy" después de 2 segundos
+                setTimeout(() => {
+                    defaultMessage.classList.remove('hidden');
+                    successMessage.classList.add('hidden');
+                }, 2000);
+            });
+        });
     </script>
 </body>
 </html>
