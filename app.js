@@ -103,7 +103,7 @@ app.get("/:shortenedUrl", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(404);
-    if(req.params.shortenedUrl.toLowerCase == "mangalibrary"){
+    if(req.params.shortenedUrl.toLowerCase() == "mangalibrary"){
       res.sendFile(__dirname + "/public/mangaLibrary-privpolicy.html")
     }else{
       res.sendFile(__dirname + "/public/404.html");
