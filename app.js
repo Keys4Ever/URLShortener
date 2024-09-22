@@ -115,6 +115,8 @@ app.get("/api/original-url/:shortenedUrl", async (req, res) => {
     res.status(error.status || 500).json({ error: error.message });
   }
 });
-
+app.get('/MangaLibrary', async(req, res)=>{
+  res.sendFile(__dirname + "/public/mangaLibrary-privpolicy.html")
+})
 // Export the Express app for Vercel
 export default app;
