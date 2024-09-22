@@ -98,14 +98,16 @@ app.post('/shortUrl', async (req, res) => {
 app.get("/:shortenedUrl", async (req, res) => {
   try {
     const originalUrl = await lookForUrl(req.params.shortenedUrl);
-    if(req.params.shortenedUrl.toLowerCase == "mangalibrary"){
-      res.sendFile(__dirname + "/public/mangaLibrary-privpolicy.html")
-    }
+
     res.redirect(originalUrl);
   } catch (error) {
     console.error(error);
     res.status(404);
-    res.sendFile(__dirname + "/public/404.html");
+    if(req.params.shortenedUrl.toLowerCase == "mangalibrary"){
+      res.sendFile(__dirname + "/public/mangaLibrary-privpolicy.html")
+    }else{
+      res.sendFile(__dirname + "/public/404.html");
+    }
   }
 });
 
