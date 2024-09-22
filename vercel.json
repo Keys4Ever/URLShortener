@@ -24,13 +24,12 @@
       "dest": "/app.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "/public/$1"
-    },
-    {
       "src": "/MangaLibrary",
       "dest": "/public/mangaLibrary-privpolicy.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
     }
-    
   ]
 }
