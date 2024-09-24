@@ -25,15 +25,22 @@ export const turso = createClient({
 
 // Look for a shortened URL.
 async function lookForUrl(id) {
+  // Buscar la URL original
   const response = await turso.execute({
     sql: "SELECT original_url FROM shortened_urls WHERE id = (:_id)",
-    args: {_id: id},
+    args: { _id: id },
   });
   if (response.rows.length === 0) {
     throw new Error("404. URL not found.");
   }
+  await turso.execute({
+    sql: "UPDATE shortened_urls SET clicks = clicks + 1 WHERE id = (:_id)",
+    args: { _id: id },
+  });
+
   return response.rows[0][0];
 }
+
 
 // Serve static files from the public folder.
 app.use(express.static(path.join(__dirname, 'public')));
@@ -84,7 +91,8 @@ app.post('/shortUrl', async (req, res) => {
     }
 
     const response = await turso.execute({
-      sql: "INSERT INTO shortened_urls (id, original_url) VALUES (:_id, :_original_url)",
+      sql: "INSERT INTO shortened_urls (id, original_url, clicks) VALUES (:_id, :_original_url, 0);",
+
       args: { _id: id, _original_url: originalUrl },
     });
 
@@ -106,7 +114,6 @@ app.post('/shortUrl', async (req, res) => {
 app.get("/:shortenedUrl", async (req, res) => {
   try {
     const originalUrl = await lookForUrl(req.params.shortenedUrl);
-
     res.redirect(originalUrl);
   } catch (error) {
     console.error(error);
