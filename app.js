@@ -38,10 +38,18 @@ async function lookForUrl(id) {
 // Serve static files from the public folder.
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get("/MangaLibrary", ( req, res)=>{
+  res.sendFile(__dirname + "/public/mangaLibrary-privpolicy.html");
+})
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 async function alreadyExists(thing){
+
+  const reservedWords = ["login", "register", "profile", "mangalibrary", "successful", "404", "index"];
+  if (reservedWords.includes(thing)) {
+    return 1;
+  }
   const result = await turso.execute({
     sql: "SELECT original_url FROM shortened_urls WHERE id = (:_id)",
     args: {_id: thing},
@@ -103,11 +111,7 @@ app.get("/:shortenedUrl", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(404);
-    if(req.params.shortenedUrl.toLowerCase() == "mangalibrary"){
-      res.sendFile(__dirname + "/public/mangaLibrary-privpolicy.html")
-    }else{
-      res.sendFile(__dirname + "/public/404.html");
-    }
+    res.sendFile(__dirname + "/public/404.html");
   }
 });
 

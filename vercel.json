@@ -12,6 +12,10 @@
   ],
   "routes": [
     {
+      "src": "/MangaLibrary",
+      "dest": "/public/mangaLibrary-privpolicy.html"
+    },
+    {
       "src": "/api/original-url/(.*)",
       "dest": "/app.js"
     },
@@ -22,10 +26,6 @@
     {
       "src": "/([a-zA-Z0-9-_]{1,60})",
       "dest": "/app.js"
-    },
-    {
-      "src": "/MangaLibrary",
-      "dest": "/public/mangaLibrary-privpolicy.html"
     },
     {
       "src": "/(.*)",
