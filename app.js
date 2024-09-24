@@ -46,7 +46,7 @@ app.get("/", (req, res) => {
 });
 async function alreadyExists(thing){
 
-  const reservedWords = ["login", "register", "profile", "mangalibrary", "successful", "404", "index"];
+  const reservedWords = ["login", "register", "profile", "mangalibrary", "successful", "404", "index", "hitler"];
   if (reservedWords.includes(thing)) {
     return 1;
   }
@@ -77,7 +77,7 @@ app.post('/shortUrl', async (req, res) => {
       }
     } else {
       if (await alreadyExists(wantedUrl)) {
-        return res.status(409).send("La URL solicitada ya existe. Por favor, intenta usar otra.");
+        return res.status(409).json("La URL solicitada ya existe o es una palabra reservada. Por favor, intenta usar otra.");
       } else {
         id = wantedUrl;
       }
