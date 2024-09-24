@@ -46,7 +46,7 @@ app.get("/", (req, res) => {
 });
 async function alreadyExists(thing){
 
-  const reservedWords = ["login", "register", "profile", "mangalibrary", "successful", "404", "index", "hitler"];
+  const reservedWords = ["login", "register", "profile", "mangalibrary", "successful", "404", "index"];
   if (reservedWords.includes(thing)) {
     return 1;
   }
@@ -95,7 +95,7 @@ app.post('/shortUrl', async (req, res) => {
     }
     } catch (error) {
       if (error.message.includes("SQLITE_CONSTRAINT: SQLite error: UNIQUE constraint failed: shortened_urls.id")) {
-        res.status(409).json({ message: "La URL deseada ya está en uso. Por favor, intenta usar otra." });
+        res.status(409).json({ message: "La URL deseada ya está en uso o es una palabra resrvada. Por favor, intenta usar otra." });
       } else {
         console.error(error);
         res.status(500).json({ message: "Error interno del servidor." });
