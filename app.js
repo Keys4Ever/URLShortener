@@ -11,11 +11,20 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 dotenv.config();
 const app = express();
+const allowedOrigins = ['https://keys.lat'];
 app.use(cors({
-  origin: '*'
+  origin: function (origin, callback) {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Connect to the Turso database
 export const turso = createClient({
@@ -41,16 +50,6 @@ async function lookForUrl(id) {
   return response.rows[0][0];
 }
 
-
-// Serve static files from the public folder.
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.get("/MangaLibrary", ( req, res)=>{
-  res.sendFile(__dirname + "/public/mangaLibrary-privpolicy.html");
-})
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
-});
 async function alreadyExists(thing){
 
   const reservedWords = ["login", "register", "profile", "mangalibrary", "successful", "404", "index"];
@@ -64,43 +63,66 @@ async function alreadyExists(thing){
   return result.rowsAffected > 0;
 }
 
-// Post method to create a new shortened URL.
-app.post('/shortUrl', async (req, res) => {
-  try {
-    let originalUrl = req.body.originalUrl;
-    let wantedUrl = req.body.wantedUrl;
-
-    if (!originalUrl) {
-      return res.status(400).send("La URL original es requerida.");
-    } else if (!originalUrl.startsWith('https://') && !originalUrl.startsWith('http://')) {
-      originalUrl = `https://${originalUrl}`;
-    }
-
-    let id;
-    if (!wantedUrl) {
-      id = nanoid(5);
-      while (await alreadyExists(id)) {
-        id = nanoid(5);
-      }
-    } else {
-      if (await alreadyExists(wantedUrl)) {
-        return res.status(409).json("La URL solicitada ya existe o es una palabra reservada. Por favor, intenta usar otra.");
-      } else {
-        id = wantedUrl;
-      }
-    }
-
-    const response = await turso.execute({
+async function insertUrl(id, originalUrl){
+      const response = await turso.execute({
       sql: "INSERT INTO shortened_urls (id, original_url, clicks) VALUES (:_id, :_original_url, 0);",
 
       args: { _id: id, _original_url: originalUrl },
     });
+    return response;
+}
 
-    if (response.rowsAffected > 0) {
-      res.status(201).json({ id, shortenedUrl: `https://keys.lat/${id}` });
-    } else {
-      res.status(500).json({ message: "No se pudo crear la URL acortada." });
-    }
+async function generateUrl(){
+  let id = nanoid(5);
+  while (await alreadyExists(id)) {
+    id = nanoid(5);
+  }
+  return id;
+}
+
+
+app.get("/MangaLibrary", ( req, res)=>{
+  res.sendFile(__dirname + "/public/mangaLibrary-privpolicy.html");
+})
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
+});
+
+// Post method to create a new shortened URL.
+app.post('/shortUrl', async (req, res) => {
+  try {
+      let originalUrl = req.body.originalUrl;
+      let wantedUrl = req.body.wantedUrl;
+
+      if (!originalUrl) {
+        return res.status(400).send("La URL original es requerida.");
+      } else if (!originalUrl.startsWith('https://') && !originalUrl.startsWith('http://')) {
+        originalUrl = `https://${originalUrl}`;
+      }
+
+      
+      let id;
+      if (wantedUrl) {
+        if (await alreadyExists(wantedUrl)) {
+          return res.status(409).json("La URL solicitada ya existe o es una palabra reservada. Por favor, intenta usar otra.");
+        }
+        id = wantedUrl;
+      } else {
+        id = await generateUrl();
+      }
+
+
+
+      if (await alreadyExists(wantedUrl)) {
+        return res.status(409).json("La URL solicitada ya existe o es una palabra reservada. Por favor, intenta usar otra.");
+      } 
+      const response = await insertUrl(id, originalUrl);
+
+      if (response.rowsAffected > 0) {
+        res.status(201).json({ id, shortenedUrl: `https://keys.lat/${id}` });
+      } else {
+        res.status(500).json({ message: "No se pudo crear la URL acortada." });
+      }
     } catch (error) {
       if (error.message.includes("SQLITE_CONSTRAINT: SQLite error: UNIQUE constraint failed: shortened_urls.id")) {
         res.status(409).json({ message: "La URL deseada ya está en uso o es una palabra reservada. Por favor, intenta usar otra." });
