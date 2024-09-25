@@ -34,20 +34,27 @@ export const turso = createClient({
 
 // Look for a shortened URL.
 async function lookForUrl(id) {
-  // Buscar la URL original
-  const response = await turso.execute({
-    sql: "SELECT original_url FROM shortened_urls WHERE id = (:_id)",
-    args: { _id: id },
-  });
+  const response = await getOriginalUrl(id);
   if (response.rows.length === 0) {
     throw new Error("404. URL not found.");
   }
+ updateClicks(id);
+
+  return response.rows[0][0];
+}
+
+async function getOriginalUrl(id){
+  return await turso.execute({
+    sql: "SELECT original_url FROM shortened_urls WHERE id = (:_id)",
+    args: { _id: id },
+  });
+}
+
+async function updateClicks(id){
   await turso.execute({
     sql: "UPDATE shortened_urls SET clicks = clicks + 1 WHERE id = (:_id)",
     args: { _id: id },
-  });
-
-  return response.rows[0][0];
+  })
 }
 
 async function alreadyExists(thing){
@@ -56,20 +63,15 @@ async function alreadyExists(thing){
   if (reservedWords.includes(thing)) {
     return 1;
   }
-  const result = await turso.execute({
-    sql: "SELECT original_url FROM shortened_urls WHERE id = (:_id)",
-    args: {_id: thing},
-  });
+  const result = await getOriginalUrl(thing);
   return result.rowsAffected > 0;
 }
 
 async function insertUrl(id, originalUrl){
-      const response = await turso.execute({
+      return await turso.execute({
       sql: "INSERT INTO shortened_urls (id, original_url, clicks) VALUES (:_id, :_original_url, 0);",
-
       args: { _id: id, _original_url: originalUrl },
     });
-    return response;
 }
 
 async function generateUrl(){
